@@ -69,27 +69,47 @@ def get_divisible_wh(w, h, df=None):
     return w_new, h_new
 
 
+# def pad_bottom_right(inp, pad_size, ret_mask=False):
+#     assert isinstance(pad_size, int) and pad_size >= max(
+#         inp.shape[-2:]
+#     ), f"{pad_size} < {max(inp.shape[-2:])}"
+#     mask = None
+#     if inp.ndim == 2:
+#         padded = np.zeros((pad_size, pad_size), dtype=inp.dtype)
+#         padded[: inp.shape[0], : inp.shape[1]] = inp
+#         if ret_mask:
+#             mask = np.zeros((pad_size, pad_size), dtype=bool)
+#             mask[: inp.shape[0], : inp.shape[1]] = True
+#     elif inp.ndim == 3:
+#         padded = np.zeros((inp.shape[0], pad_size, pad_size), dtype=inp.dtype)
+#         padded[:, : inp.shape[1], : inp.shape[2]] = inp
+#         if ret_mask:
+#             mask = np.zeros((inp.shape[0], pad_size, pad_size), dtype=bool)
+#             mask[:, : inp.shape[1], : inp.shape[2]] = True
+#     else:
+#         raise NotImplementedError()
+#     return padded, mask
 def pad_bottom_right(inp, pad_size, ret_mask=False):
-    assert isinstance(pad_size, int) and pad_size >= max(
-        inp.shape[-2:]
-    ), f"{pad_size} < {max(inp.shape[-2:])}"
+    assert isinstance(pad_size, int) and pad_size >= max(inp.shape[-2:]), f"{pad_size} < {max(inp.shape[-2:])}"
     mask = None
     if inp.ndim == 2:
         padded = np.zeros((pad_size, pad_size), dtype=inp.dtype)
-        padded[: inp.shape[0], : inp.shape[1]] = inp
+        padded[:inp.shape[0], :inp.shape[1]] = inp
         if ret_mask:
             mask = np.zeros((pad_size, pad_size), dtype=bool)
-            mask[: inp.shape[0], : inp.shape[1]] = True
+            mask[:inp.shape[0], :inp.shape[1]] = True
     elif inp.ndim == 3:
         padded = np.zeros((inp.shape[0], pad_size, pad_size), dtype=inp.dtype)
-        padded[:, : inp.shape[1], : inp.shape[2]] = inp
+        padded[:, :inp.shape[1], :inp.shape[2]] = inp
         if ret_mask:
-            mask = np.zeros((inp.shape[0], pad_size, pad_size), dtype=bool)
-            mask[:, : inp.shape[1], : inp.shape[2]] = True
+            # mask = np.zeros((inp.shape[0], pad_size, pad_size), dtype=bool)
+            # mask[:, :inp.shape[1], :inp.shape[2]] = True
+            mask = np.zeros((pad_size, pad_size), dtype=bool)
+            mask[:inp.shape[1], :inp.shape[2]] = True
+        
     else:
         raise NotImplementedError()
     return padded, mask
-
 
 # --- MEGADEPTH ---
 def imread_rgb(path, augment_fn=None, client=SCANNET_CLIENT):

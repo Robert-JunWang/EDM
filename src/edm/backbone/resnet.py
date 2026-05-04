@@ -57,10 +57,11 @@ class ResNet18(nn.Module):
         super().__init__()
         # Config
         block_dims = config["backbone"]["block_dims"]
+        in_dim = config["backbone"]["in_dim"]
 
         # Networks
         self.conv1 = nn.Conv2d(
-            1, block_dims[0], kernel_size=7, stride=2, padding=3, bias=False
+            in_dim, block_dims[0], kernel_size=7, stride=2, padding=3, bias=False
         )
         self.bn1 = nn.BatchNorm2d(block_dims[0])
         self.relu = nn.ReLU(inplace=True)

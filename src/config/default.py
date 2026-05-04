@@ -16,6 +16,7 @@ _CN.EDM.EVAL_TIMES = 1
 
 # 3. Coarse-Matching config
 _CN.EDM.BACKBONE = CN()
+_CN.EDM.BACKBONE.IN_DIM = 1
 _CN.EDM.BACKBONE.BLOCK_DIMS = [32, 64, 128, 256, 256]  # 1/2 -> 1/32
 
 # 3. Coarse-Matching config
