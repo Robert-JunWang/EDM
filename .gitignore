@@ -13,6 +13,10 @@ __pycache__
 *.air
 *.ipa
 *.apk
+data/
+logs/
+
+data/megadepth/index/
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
