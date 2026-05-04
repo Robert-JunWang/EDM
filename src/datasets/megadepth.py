@@ -84,9 +84,11 @@ class MegaDepthDataset(Dataset):
 
         if not grayscale:
             self.read_image_func = read_megadepth_rgb
+            print('load rgb image')
             if mean:
                 self.normalize = transforms.Normalize(mean=mean, std=std)
         else:
+            print('load graysacle image')
             self.read_image_func = read_megadepth_gray
 
     def __len__(self):

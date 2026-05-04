@@ -51,6 +51,7 @@ def parse_args():
     parser.add_argument("--log_every_n_steps", type=int, default=100)
     parser.add_argument("--num_sanity_val_steps", type=int, default=10)
     parser.add_argument("--benchmark", default=True)
+    parser.add_argument("--rgb", default=True)
     parser.add_argument("--max_epochs", type=int, default=30)
     parser.add_argument("--split_data_idx", type=int, default=0)
     parser.add_argument(
