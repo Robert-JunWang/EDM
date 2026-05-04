@@ -83,8 +83,8 @@ class MultiSceneDataModule(pl.LightningDataModule):
 
         self.fp16 = config.EDM.HALF
 
-        self.rgb = getattr(args, "rgb", False),
-        print('args', args, self.rgb )
+        self.rgb = getattr(args, "rgb", False)
+        # print('args', args, self.rgb )
 
         # 3.loader parameters
         self.train_loader_params = {

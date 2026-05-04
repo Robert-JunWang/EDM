@@ -85,7 +85,9 @@ def main():
     config.merge_from_file(args.main_cfg_path)
     config.merge_from_file(args.data_cfg_path)
 
-    config.BACKBONE.IN_DIM = 3
+    config.EDM.BACKBONE.IN_DIM = 3
+
+    args.rgb = True
 
 
     pl.seed_everything(config.TRAINER.SEED)  # reproducibility
