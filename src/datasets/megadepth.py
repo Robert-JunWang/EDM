@@ -5,8 +5,8 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset
 from loguru import logger
 
-from src.utils.dataset import read_megadepth_gray, read_megadepth_depth
-
+from src.utils.dataset import read_megadepth_gray, read_megadepth_rgb, read_megadepth_depth
+from torchvision import transforms
 
 class MegaDepthDataset(Dataset):
     def __init__(
@@ -21,6 +21,10 @@ class MegaDepthDataset(Dataset):
         depth_padding=False,
         augment_fn=None,
         fp16=False,
+        grayscale=True,
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225],
+
         **kwargs
     ):
         """
@@ -74,6 +78,16 @@ class MegaDepthDataset(Dataset):
         self.coarse_scale = getattr(kwargs, "coarse_scale", 0.125)
 
         self.fp16 = fp16
+        self.grayscale = grayscale
+
+        self.normalize = None
+
+        if not grayscale:
+            self.read_image_func = read_megadepth_rgb
+            if mean:
+                self.normalize = transforms.Normalize(mean=mean, std=std)
+        else:
+            self.read_image_func = read_megadepth_gray
 
     def __len__(self):
         return len(self.pair_infos)
@@ -88,12 +102,12 @@ class MegaDepthDataset(Dataset):
             self.root_dir, self.scene_info["image_paths"][idx1])
 
         # TODO: Support augmentation & handle seeds for each worker correctly.
-        image0, mask0, scale0 = read_megadepth_gray(
-            img_name0, self.img_resize, self.df, self.img_padding, None
+        image0, mask0, scale0 = self.read_image_func(
+            img_name0, self.img_resize, self.df, self.img_padding, augment_fn=None, normalize_fn=self.normalize
         )
         # np.random.choice([self.augment_fn, None], p=[0.5, 0.5]))
-        image1, mask1, scale1 = read_megadepth_gray(
-            img_name1, self.img_resize, self.df, self.img_padding, None
+        image1, mask1, scale1 = self.read_image_func(
+            img_name1, self.img_resize, self.df, self.img_padding, augment_fn=None, normalize_fn=self.normalize
         )
         # np.random.choice([self.augment_fn, None], p=[0.5, 0.5]))
 

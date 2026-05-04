@@ -83,6 +83,8 @@ class MultiSceneDataModule(pl.LightningDataModule):
 
         self.fp16 = config.EDM.HALF
 
+        self.rgb = getattr(args, "rgb", False),
+
         # 3.loader parameters
         self.train_loader_params = {
             "batch_size": args.batch_size,
@@ -309,6 +311,7 @@ class MultiSceneDataModule(pl.LightningDataModule):
                         depth_padding=self.mgdpt_depth_pad,
                         augment_fn=augment_fn,
                         coarse_scale=self.coarse_scale,
+                        grayscale = not self.rgb,
                         fp16=self.fp16,
                     )
                 )
